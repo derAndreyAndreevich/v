@@ -30,14 +30,14 @@ function Compile-Vala($options) {
   if ($options.item("type") -eq "library") {
   }
 
-  # echo "valac $files $output $library $header $pkgs $coptions $clibs"
+  echo "valac $files $output $library $header $pkgs $coptions $clibs"
   valac $output $library $header $pkgs $clibs $coptions $files
 }
 
 function Install-Library-Vala($name) {
   cp "build\$name.dll"  "$valaDir\bin\$name.dll"
   cp "build\$name.dll"  "$valaDir\lib\lib$name.a"
-  cp "build\$name.h"    "$valaDir\lib\$name.h"
+  cp "build\$name.h"    "$valaDir\include\$name.h"
   cp "build\$name.vapi" "$valaVapiDir\$name.vapi"
 }
 

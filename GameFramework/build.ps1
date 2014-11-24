@@ -37,7 +37,7 @@ function Compile-Vala($options) {
 function Install-Library-Vala($name) {
   cp "build\$name.dll"  "$valaDir\bin\$name.dll"
   cp "build\$name.dll"  "$valaDir\lib\lib$name.a"
-  cp "build\$name.h"    "$valaDir\lib\$name.h"
+  cp "build\$name.h"    "$valaDir\include\$name.h"
   cp "build\$name.vapi" "$valaVapiDir\$name.vapi"
 }
 
