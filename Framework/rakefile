@@ -1,0 +1,24 @@
+require "colorize"
+require "vala"
+
+VALA_DIR = "c:/vala-0.20.1"
+VALA_VAPI_DIR = "c:/ProgramData/vala-0.20/vapi"
+
+def profile_task(task_name)
+  start_time = Time.new
+  yield
+  elapsed = Time.at(Time.new - start_time).gmtime.strftime "%H:%M:%S.%L"
+  puts "#{task_name} [".light_white << "#{elapsed}".light_green << "]".light_white
+end 
+
+task :default do |task_name| 
+  profile_task(task_name) do
+    sh ValaCompile.new(
+      application_type: "shared-library",
+      project_name: "System",
+      files: FileList["./**/*.vala"]
+    ).to_s do |ok, res|
+      puts "Complie ok".light_white
+    end
+  end
+end

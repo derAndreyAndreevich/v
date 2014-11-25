@@ -1,0 +1,23 @@
+require "colorize"
+require "vala"
+
+VALA_DIR = "c:/vala-0.20.1"
+VALA_VAPI_DIR = "c:/ProgramData/vala-0.20/vapi"
+
+def profile_task(task_name)
+  start_time = Time.new
+  yield
+  elapsed = Time.at(Time.new - start_time).gmtime.strftime "%H:%M:%S.%L"
+  puts "#{task_name} [".light_white << "#{elapsed}".light_green << "]".light_white
+end 
+
+
+task :hello do |task_name|
+  profile_task(task_name) do
+    puts ValaCompile.new(
+      pkgs: "System Vala.Game.Framework",
+      project_dir: "./hello-world",
+      files: FileList["./hello-world/**/*.vala"]
+    ).to_s
+  end
+end
