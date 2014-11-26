@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #define SLEEP_TIME 5000
-#define LOGFILE "C:\\projects\\memstatus.txt"
+#define LOGFILE "C:\\MyServices\\memstatus.txt"
 
 SERVICE_STATUS ServiceStatus; 
 SERVICE_STATUS_HANDLE hStatus; 
@@ -13,13 +13,13 @@ int InitService();
 
 int WriteToLog(char* str)
 {
-	FILE* log;
-	log = fopen(LOGFILE, "a+");
-	if (log == NULL)
-		return -1;
-	fprintf(log, "%s\n", str);
-	fclose(log);
-	return 0;
+  FILE* log;
+  log = fopen(LOGFILE, "a+");
+  if (log == NULL)
+    return -1;
+  fprintf(log, "%s\n", str);
+  fclose(log);
+  return 0;
 }
 
 void main() 
@@ -48,8 +48,8 @@ void ServiceMain(int argc, char** argv)
     ServiceStatus.dwWaitHint           = 0; 
  
     hStatus = RegisterServiceCtrlHandler(
-		"MemoryStatus", 
-		(LPHANDLER_FUNCTION)ControlHandler); 
+    "MemoryStatus", 
+    (LPHANDLER_FUNCTION)ControlHandler); 
     if (hStatus == (SERVICE_STATUS_HANDLE)0) 
     { 
         // Registering Control Handler failed
@@ -59,7 +59,7 @@ void ServiceMain(int argc, char** argv)
     error = InitService(); 
     if (error) 
     {
-		// Initialization failed
+    // Initialization failed
         ServiceStatus.dwCurrentState       = SERVICE_STOPPED; 
         ServiceStatus.dwWin32ExitCode      = -1; 
         SetServiceStatus(hStatus, &ServiceStatus); 
@@ -72,21 +72,21 @@ void ServiceMain(int argc, char** argv)
     MEMORYSTATUS memory;
     // The worker loop of a service
     while (ServiceStatus.dwCurrentState == SERVICE_RUNNING)
-	{
-		char buffer[16];
-		GlobalMemoryStatus(&memory);
-		sprintf(buffer, "%d", memory.dwAvailPhys);
-		int result = WriteToLog(buffer);
-		if (result)
-		{
-			ServiceStatus.dwCurrentState       = SERVICE_STOPPED; 
-			ServiceStatus.dwWin32ExitCode      = -1; 
-			SetServiceStatus(hStatus, &ServiceStatus);
-			return;
-		}
+  {
+    char buffer[16];
+    GlobalMemoryStatus(&memory);
+    sprintf(buffer, "%d", memory.dwAvailPhys);
+    int result = WriteToLog(buffer);
+    if (result)
+    {
+      ServiceStatus.dwCurrentState       = SERVICE_STOPPED; 
+      ServiceStatus.dwWin32ExitCode      = -1; 
+      SetServiceStatus(hStatus, &ServiceStatus);
+      return;
+    }
 
-		Sleep(SLEEP_TIME);
-	}
+    Sleep(SLEEP_TIME);
+  }
     return; 
 }
  

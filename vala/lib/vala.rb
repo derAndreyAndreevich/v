@@ -27,7 +27,7 @@ class Vala
     start_time = Time.new
     yield
     elapsed = Time.at(Time.new - start_time).gmtime.strftime "%H:%M:%S.%L"
-    puts "#{project_name} [".light_white << task_name.light_magenta << "] [".light_white << "#{elapsed}".light_green << "]".light_white
+    puts "#{project_name} [".light_white << "#{task_name}".light_magenta << "] [".light_white << "#{elapsed}".light_green << "]".light_white
   end 
 
   def self.install_library(name, project_dir: ".")
