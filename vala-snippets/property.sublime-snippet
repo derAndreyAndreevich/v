@@ -1,0 +1,11 @@
+<snippet>
+  <content><![CDATA[
+private ${1:int} _${2:name} = ${3:default};
+public $1 get_$2 () { return _$2; }
+public ${TM_FILENAME/(^|-|\.vala)(.?)|/\U\2\E/g} set_$2 ($1 _value = $3) { _$2 = _value; return this; }
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>prop</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.vala</scope>
+</snippet>

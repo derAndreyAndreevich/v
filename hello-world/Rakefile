@@ -1,0 +1,38 @@
+require "colorize"
+require "vala"
+
+VALA_DIR = "c:/vala-0.20.1"
+VALA_VAPI_DIR = "c:/ProgramData/vala-0.20/vapi"
+
+PNAME = {
+  hello: "hello-world"
+}
+
+task :compile do |task_name| 
+  Vala.profile_task(PNAME[:hello], task_name.to_s) {
+    sh Vala.new(
+      project_name: PNAME[:hello],
+      pkgs: "System VGF.System",
+      c_libs: "System VGF.System",
+      files: FileList["./**/*.vala"]
+    ).compile_s { |ok, res|
+      puts "compile end".light_white
+    }
+  }
+end
+
+task :clean do |task_name|
+  Vala.profile_task(PNAME[:hello], task_name.to_s) {
+    rm_f FileList["build/**/*.*"]
+  }
+end
+
+task :install do |task_name| 
+  Vala.profile_task(PNAME[:hello], task_name.to_s) {
+    ["libglib-2.0-0.dll", "libgobject-2.0-0.dll", "System.dll", "VGF.System.dll"].each { |x| cp "#{VALA_DIR}/bin/#{x}", "build/#{x}" }
+  }
+end
+
+task :hello => ["compile"]
+
+task :default => ["compile"]

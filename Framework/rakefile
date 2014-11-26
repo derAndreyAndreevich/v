@@ -1,0 +1,49 @@
+require "colorize"
+require "vala"
+
+VALA_DIR = "c:/vala-0.20.1"
+VALA_VAPI_DIR = "c:/ProgramData/vala-0.20/vapi"
+
+PNAME = {
+  system: "System"
+}
+
+namespace :compile do
+  task :system do |task_name|
+    Vala.profile_task(PNAME[:system], task_name.to_s) {
+      sh Vala.new(
+        application_type: "shared-library",
+        project_name: PNAME[:system],
+        files: FileList["./**/*.vala"]
+      ).compile_s { |ok, res|
+        puts "compile end".light_white
+      }
+    }
+  end
+end
+
+namespace :install do 
+  task :system do |task_name|
+    Vala.profile_task(PNAME[:system], task_name.to_s) {
+      Vala.install_library PNAME[:system]
+    }
+  end
+end
+
+namespace :clean do
+  task :system do |task_name|
+    Vala.profile_task(PNAME[:system], task_name.to_s) {
+      rm_f("""
+        build/#{PNAME[:system]}.dll 
+        build/#{PNAME[:system]}.vapi 
+        build/#{PNAME[:system]}.h
+      """.split " ")
+    }
+  end
+end
+
+namespace :guard do
+  task :system => ["compile:system", "install:system"]
+end
+
+task :default => ["clean:system", "compile:system", "install:system"]

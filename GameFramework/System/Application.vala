@@ -22,5 +22,7 @@ namespace Vala.Game.Framework {
     public string to_string () {
       return @"Application { width: $_width, height: $_height, caption: $_caption }";
     }
+
+    
   }
 }

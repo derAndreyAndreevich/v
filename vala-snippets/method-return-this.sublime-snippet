@@ -1,0 +1,12 @@
+<snippet>
+  <content><![CDATA[
+public ${TM_FILENAME/(^|-|\.vala)(.?)|/\U\2\E/g} ${1:name} (${2:params}) {
+  $0;
+  return this;
+}
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>mthis</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.vala</scope>
+</snippet>

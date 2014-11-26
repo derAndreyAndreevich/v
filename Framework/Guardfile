@@ -1,0 +1,6 @@
+# A sample Guardfile
+# More info at https://github.com/guard/guard#readme
+
+guard 'rake', :task => 'guard:system', :run_on_all => false do
+  watch(%r{^System/.+\.vala$})
+end
