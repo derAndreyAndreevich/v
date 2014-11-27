@@ -1,38 +1,23 @@
-namespace Service {
-  public int dll_main () {
-      try {
-          // an output file in the current working directory
-          var file = File.new_for_path ("out.txt");
+using Gtk;
 
-          // delete if file already exists
-          if (file.query_exists ()) {
-              file.delete ();
-          }
+int main (string[] args) {
+    Gtk.init (ref args);
 
-          // creating a file and a DataOutputStream to the file
-          /*
-              Use BufferedOutputStream to increase write speed:
-              var dos = new DataOutputStream (new BufferedOutputStream.sized (file.create (FileCreateFlags.REPLACE_DESTINATION), 65536));
-          */
-          var dos = new DataOutputStream (file.create (FileCreateFlags.REPLACE_DESTINATION));
+    var window = new Window ();
+    window.title = "First GTK+ Program";
+    window.border_width = 10;
+    window.window_position = WindowPosition.CENTER;
+    window.set_default_size (350, 70);
+    window.destroy.connect (Gtk.main_quit);
 
-          // writing a short string to the stream
-          dos.put_string ("this is the first line\n");
-          
-          string text = "this is the second line\n";
-          // For long string writes, a loop should be used, because sometimes not all data can be written in one run
-          // 'written' is used to check how much of the string has already been written
-          uint8[] data = text.data;
-          long written = 0;
-          while (written < data.length) { 
-              // sum of the bytes of 'text' that already have been written to the stream
-              written += dos.write (data[written:data.length]);
-          }
-      } catch (Error e) {
-          stderr.printf ("%s\n", e.message);
-          return 1;
-      }
+    var button = new Button.with_label ("Click me!");
+    button.clicked.connect (() => {
+        button.label = "Thank you";
+    });
 
-      return 0;
-  }
+    window.add (button);
+    window.show_all ();
+
+    Gtk.main ();
+    return 0;
 }

@@ -33,9 +33,32 @@ class Vala
   def self.install_library(name, project_dir: ".")
     copy_name = "#{project_dir}/build/#{name}"
 
+    File.open("#{copy_name}.pc", "w") { |f| 
+      text = """
+        prefix=/opt
+        exec_prefix=${prefix}
+        libdir=${exec_prefix}/lib
+        includedir=${prefix}/include
+
+
+        Name: #{name}
+        Description:
+        Version:
+        Requires.private: 
+        Libs: -L${libdir} -l#{name}
+        Libs.private:
+        Cflags: -I${includedir} -I${libdir}
+      """.lines.collect do |x| 
+        x.lstrip 
+      end
+
+      f.write text.join
+    }
+
     cp "#{copy_name}.dll",  "#{VALA_DIR}/bin/#{name}.dll"
     cp "#{copy_name}.dll",  "#{VALA_DIR}/lib/lib#{name}.a"
     cp "#{copy_name}.h",    "#{VALA_DIR}/include/#{name}.h"
+    cp "#{copy_name}.pc",   "#{VALA_DIR}/lib/pkgconfig/#{name}.pc"
     cp "#{copy_name}.vapi", "#{VALA_VAPI_DIR}/#{name}.vapi"
 
   end
@@ -43,6 +66,18 @@ class Vala
   def compile_s 
     build_dir = File.expand_path "#{project_dir}/build"
     output = "--output=" << "#{build_dir}/#{project_name}".green
+    pkg_config_list = `pkg-config --list-all`.lines.map { |x| x.split[0] }
+    pkg_clibs = ""
+
+    @pkgs.split.each do |x|
+      pkg_clibs << " #{x}" if pkg_config_list.include? x
+    end
+
+    pkg_options = `pkg-config --libs --cflags #{pkg_clibs}`.split.collect do |x|
+      "--Xcc=" << "#{x}".green
+    end 
+
+    pkg_options = pkg_options.uniq.join(" ")
 
     @pkgs = @pkgs.split.collect do |x|
       "--pkg=" << "#{x}".green
@@ -58,7 +93,7 @@ class Vala
 
     @pkgs = @pkgs.join " "
     @c_libs = @c_libs.join " "
-    @c_options = @c_options.join " "
+    @c_options = @c_options.join(" ") << pkg_options
 
     case @application_type
     when "console"
@@ -75,7 +110,7 @@ class Vala
     end
 
 
-    result = "#{@valac} #{output} #{@pkgs} #{@c_libs} #{@c_options} #{@vala_options} #{@files.to_s.yellow}"
+    result = "#{@valac} -q #{@files.to_s.yellow} #{output} #{@pkgs} #{@c_libs} #{@c_options} #{@vala_options}"
 
     puts result
 

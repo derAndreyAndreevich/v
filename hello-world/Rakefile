@@ -10,14 +10,11 @@ PNAME = {
 
 task :compile do |task_name| 
   Vala.profile_task(PNAME[:hello], task_name.to_s) {
-    sh Vala.new(
+    system Vala.new(
       project_name: PNAME[:hello],
       pkgs: "System VGF.System",
-      c_libs: "System VGF.System",
       files: FileList["./**/*.vala"]
-    ).compile_s { |ok, res|
-      puts "compile end".light_white
-    }
+    ).compile_s
   }
 end
 
@@ -29,7 +26,12 @@ end
 
 task :install do |task_name| 
   Vala.profile_task(PNAME[:hello], task_name.to_s) {
-    ["libglib-2.0-0.dll", "libgobject-2.0-0.dll", "System.dll", "VGF.System.dll"].each { |x| cp "#{VALA_DIR}/bin/#{x}", "build/#{x}" }
+    """
+      libglib-2.0-0.dll 
+      libgobject-2.0-0.dll 
+      System.dll 
+      VGF.System.dll
+    """.split(" ").each { |x| cp "#{VALA_DIR}/bin/#{x}", "build/#{x}" }
   }
 end
 

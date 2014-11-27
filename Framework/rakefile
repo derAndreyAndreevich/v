@@ -11,13 +11,11 @@ PNAME = {
 namespace :compile do
   task :system do |task_name|
     Vala.profile_task(PNAME[:system], task_name.to_s) {
-      sh Vala.new(
+      system Vala.new(
         application_type: "shared-library",
         project_name: PNAME[:system],
         files: FileList["./**/*.vala"]
-      ).compile_s { |ok, res|
-        puts "compile end".light_white
-      }
+      ).compile_s
     }
   end
 end

@@ -1,3 +1,3 @@
-void main() {
-  stdout.printf("hello world\n");
+int torololo() {
+  return 0;
 }
