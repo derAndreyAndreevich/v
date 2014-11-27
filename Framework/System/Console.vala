@@ -10,7 +10,6 @@ namespace System {
       if (str == null) 
         str = "";
 
-
       return str;
     }
   }

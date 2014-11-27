@@ -60,7 +60,51 @@ class Vala
     cp "#{copy_name}.h",    "#{VALA_DIR}/include/#{name}.h"
     cp "#{copy_name}.pc",   "#{VALA_DIR}/lib/pkgconfig/#{name}.pc"
     cp "#{copy_name}.vapi", "#{VALA_VAPI_DIR}/#{name}.vapi"
+  end
 
+  def self.install_dependence(pkgs, project_dir: ".")
+    deps = []
+
+    pkgs.split(" ").each do |p|
+
+      case p
+      when "glib", "glib-2.0"
+        deps += [
+          "libglib-2.0-0.dll", 
+          "libgobject-2.0-0.dll"
+        ]
+      when "gtk", "gtk+-3.0"
+        deps += [
+          "libglib-2.0-0.dll", 
+          "libgobject-2.0-0.dll",
+          "libgtk-3-0.dll",
+          "libgdk-3-0.dll",
+          "libatk-1.0-0.dll",
+          "libcairo-2.dll",
+          "libcairo-gobject-2.dll",
+          "libgdk_pixbuf-2.0-0.dll",
+          "libgio-2.0-0.dll",
+          "libgmodule-2.0-0.dll",
+          "libpango-1.0-0.dll",
+          "libpangowin32-1.0-0.dll",
+          "libpangocairo-1.0-0.dll",
+          "libfontconfig-1.dll",
+          "libfreetype-6.dll",
+          "libpixman-1-0.dll",
+          "libpng15-15.dll",
+          "libpangoft2-1.0-0.dll",
+          "libexpat-1.dll"
+        ]
+      else
+        if File.exist?"#{VALA_DIR}/bin/lib#{p}.dll"
+          deps << "lib#{p}.dll"
+        elsif File.exist?"#{VALA_DIR}/bin/#{p}.dll"
+          deps << "#{p}.dll"
+        end
+      end
+    end
+
+    deps.uniq.each { |e| cp "#{VALA_DIR}/bin/#{e}", "#{project_dir}/build/#{e}" }
   end
 
   def compile_s 

@@ -8,13 +8,16 @@ PNAME = {
   hello: "hello-world"
 }
 
-task :compile do |task_name| 
+vala = Vala.new(
+  application_type: "desktop",
+  project_name: PNAME[:hello],
+  pkgs: "System VGF.System gtk+-3.0",
+  files: FileList["./**/*.vala"]
+)
+
+task :compile do |task_name|
   Vala.profile_task(PNAME[:hello], task_name.to_s) {
-    system Vala.new(
-      project_name: PNAME[:hello],
-      pkgs: "System VGF.System",
-      files: FileList["./**/*.vala"]
-    ).compile_s
+    system Vala.compile_s
   }
 end
 
@@ -26,12 +29,12 @@ end
 
 task :install do |task_name| 
   Vala.profile_task(PNAME[:hello], task_name.to_s) {
-    """
-      libglib-2.0-0.dll 
-      libgobject-2.0-0.dll 
-      System.dll 
-      VGF.System.dll
-    """.split(" ").each { |x| cp "#{VALA_DIR}/bin/#{x}", "build/#{x}" }
+    vala.install_dependence
+    # Vala.install_dep """
+    #   glib
+    #   gtk
+    #   System
+    # """
   }
 end
 
