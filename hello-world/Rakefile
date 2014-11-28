@@ -17,7 +17,7 @@ vala = Vala.new(
 
 task :compile do |task_name|
   Vala.profile_task(PNAME[:hello], task_name.to_s) {
-    system Vala.compile_s
+    system vala.compile_s
   }
 end
 
