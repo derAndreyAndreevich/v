@@ -10,7 +10,7 @@ PNAME = {
 
 vala = Vala.new(
   project_name: PNAME[:builder],
-  pkgs: "System posix",
+  pkgs: "System",
   files: FileList["./**/*.vala"]
 )
 
