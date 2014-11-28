@@ -8,7 +8,7 @@ public static int main (string[] args) {
     string ls_stderr;
     int ls_status;
 
-    Process.spawn_sync ("./",
+    Process.spawn_sync ("./ ",
               spawn_args,
               spawn_env,
               SpawnFlags.SEARCH_PATH,
