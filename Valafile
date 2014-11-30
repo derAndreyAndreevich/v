@@ -9,6 +9,6 @@
 
 - name: hello-world
   type: "console"
-  pkgs: System Vala.Game.Framework
+  pkgs: System
   files: hello-world/**/*.vala
-  cflags: -Ofast -static-libgcc
+  cflags: -Ofast -static-libgcc -std=c99 -pedantic-errors -fextended-identifiers
