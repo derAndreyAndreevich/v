@@ -1,0 +1,14 @@
+- name: System
+  type: shared-library
+  files: Framework/System/**/*.vala
+
+- name: Vala.Game.Framework
+  type: shared-library
+  pkgs: System sdl sdl-gfx
+  files: GameFramework/System/**/*.vala
+
+- name: hello-world
+  type: "console"
+  pkgs: System Vala.Game.Framework
+  files: hello-world/**/*.vala
+  cflags: -Ofast -static-libgcc

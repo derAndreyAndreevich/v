@@ -1,0 +1,1 @@
+ruby vala-builder.rb

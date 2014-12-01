@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = ""
   s.authors     = [""]
   s.email       = ''
-  s.files       = ["lib/vala.rb"]
+  s.files       = ["bin/vala-builder.bat", "bin/vala-builder.rb", "lib/vala.rb"]
   s.homepage    = ''
   s.license     = ''
 end
