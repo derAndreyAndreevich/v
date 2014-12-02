@@ -1,0 +1,7 @@
+[Projects]
+  names = test
+
+[test]
+  files = test
+  pkgs = glib-2.0
+  cflags = -Ofast, -std=c99
