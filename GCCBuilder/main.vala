@@ -2,7 +2,7 @@ string array_to_string (string[] arr) {
   var result = "";
   for (var i = 0; i < arr.length; ++i) {
     if (i == 0) result += @"[";
-    if (i < arr.length) result += @"$(arr[i]),";
+    if (i < arr.length) result += i < arr.length - 1 ? @"$(arr[i])," : @"$(arr[i])";
     if (i == arr.length - 1) result += "]";
   }
   return result;
