@@ -1,8 +1,0 @@
-[Projects]
-  names = test
-
-[test]
-  files = test
-  pkgs = glib-2.0, sdl, sdl-gfx
-  clibs = SDL_gfx
-  cflags = -Ofast, -std=c99
